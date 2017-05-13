@@ -20,6 +20,8 @@ class DataComponent extends React.Component {
           key={u.id}
           user={u}
           handleUserDelete={this.props.handleUserDelete}
+          handleUserModify={this.props.handleUserModify}
+          handleOpen={this.props.handleOpen}
           />
       ));
     const cohorts = this.props.allCohorts.map(c => {
@@ -27,12 +29,26 @@ class DataComponent extends React.Component {
     })
     
     return (
-      <Card className="queue" initiallyExpanded={false}>
-        <CardHeader title='Data'
+      <Card className="queue" initiallyExpanded={true}>
+        <CardHeader title='Manage Users'
           actAsExpander={true}
           showExpandableButton={true}
           />
         <CardText expandable={true}>
+              <SelectField
+                className="user-input-field" 
+                value={this.props.cityChoice}
+                errorText={this.props.cohortChoice !== 'All Cohorts' && this.props.cityChoice !== 'All Cities' && 'Already filtering by Cohort, Silly!'}
+                floatingLabelText='Filter By City'
+                onChange={(e, idx, val)=> this.props.handleFilterByCity(val)}
+              >
+                <MenuItem value={'All Cities'} primaryText='All Cities' />
+                <MenuItem value={'HRNYC'} primaryText="New York" />
+                <MenuItem value={'HRSFO'} primaryText="San Francisco" />
+                <MenuItem value={'HRLAX'} primaryText="Los Angeles" />
+                <MenuItem value={'HRAUS'} primaryText="Austin" />
+                <MenuItem value={'HRREM'} primaryText="Remote" />
+              </SelectField> 
               <SelectField
                 className="user-input-field" 
                 value={this.props.cohortChoice}
@@ -41,7 +57,7 @@ class DataComponent extends React.Component {
               >
                 <MenuItem value={'All Cohorts'} primaryText='All Cohorts' />
                 {cohorts}
-              </SelectField> 
+              </SelectField>
           <Table>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
@@ -49,7 +65,7 @@ class DataComponent extends React.Component {
                 <TableHeaderColumn>Given Name</TableHeaderColumn>
                 <TableHeaderColumn>Role</TableHeaderColumn>
                 <TableHeaderColumn>Cohort</TableHeaderColumn>
-                <TableHeaderColumn>Delete User</TableHeaderColumn>
+                <TableHeaderColumn> Modify / Delete</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>

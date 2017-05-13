@@ -32,7 +32,7 @@ routes.get('/auth/logout', (req, res) => {
 routes.route('/api/users')
   .get(controllers.getUsers)
   .post(controllers.postUsers)
-  // .put(controllers.updateUser)
+  .put(controllers.updateCurrentUser)
   .delete(controllers.deleteUser);
 
 routes.route('/api/user/:username')
@@ -42,8 +42,8 @@ routes.route('/api/user/:username')
 
 routes.route('/api/cohort')
   .get(controllers.getAllCohorts)
-  .post(controllers.createCohort);
-  // .delete(controllers.deleteTownHall)
+  .post(controllers.createCohort)
+  .delete(controllers.deleteCohort);
   // .put(controllers.nextTownHall);
 
 routes.route('/api/townHall')

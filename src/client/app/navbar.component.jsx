@@ -88,7 +88,8 @@ class NavBar extends React.Component {
 					open={this.state.open}
 					onRequestChange={(open) => this.setState({open})}
 					>
-						<AppBar title="Question Queue" showMenuIconButton={false} />
+						<AppBar className="appbar"title="Question Queue" showMenuIconButton={false} />
+						<hr style={{marginBottom: '70px'}}/>
 						<MenuItem className="navbarItem" href="#/home" onTouchTap={this.handleClose}>
 						  <i className="material-icons">home</i>
 						  <span className="navbarText"> Home </span>

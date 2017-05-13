@@ -21,6 +21,17 @@ exports.getAllCohorts = (req, res) => {
   })
 }
 
+exports.deleteCohort = (req,res) => {
+  console.log('delete req.body', req.body);
+  User.remove({cohort: req.body.cohort}, err => {
+    if (err) console.log(err);
+  });
+  Cohort.Cohort.findOneAndRemove({cohort: req.body.cohort}, (err, cohort) => {
+    if (err) res.status(404).send(err);
+    else res.status(202).send()
+  })
+}
+
 exports.createCohort = (req, res) => {
   Cohort.Cohort.create(req.body, (err, newCohort) => {
     if (err) res.status(404).send(err);
@@ -131,7 +142,7 @@ exports.postUsers = (req, res) => {
 
 exports.deleteUser = (req,res) => {
   User.findByIdAndRemove(req.body)
-  .then(() => res.status(202).send('boo'));
+  .then(() => res.status(202).send());
 }
 
 // QUESTIONS-------------------------------->

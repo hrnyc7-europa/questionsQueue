@@ -15,18 +15,22 @@ class AddUserComponent extends React.Component {
       username: '',
       givenName: '',
       role: 'student',
-      cohort: 'HRNYC-7',
-      cohortCity: 'HRNYC',
-      cohortNumber: 7,
+      cohort: props.user.cohort,
+      cohortDelete: '',
+      cohortCity: props.user.cohort.slice(0,5),
+      cohortNumber: props.user.cohort.slice(6),
       bulkSubmit: '',
       allCohorts: [],
       snackMessage: 'Hello World',
         snackbackgroundColor: '#536DFE',
         snackbar: false,
     }
+    this.closeSnackbar = this.closeSnackbar.bind(this);
     this.getAllCohorts = this.getAllCohorts.bind(this);
     this.handleUserSubmit = this.handleUserSubmit.bind(this);
     this.handleCohortChange = this.handleCohortChange.bind(this);
+    this.handleCohortDelete = this.handleCohortDelete.bind(this);
+    this.handleDeleteCohortChange = this.handleDeleteCohortChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCohortNumberChange = this.handleCohortNumberChange.bind(this);
     this.handleCohortCityChange = this.handleCohortCityChange.bind(this);
@@ -47,7 +51,10 @@ class AddUserComponent extends React.Component {
   handleCohortChange(event, index, value) {
     this.setState({ cohort:value });
   }
-  
+  handleDeleteCohortChange(event, index, value) {
+    this.setState({ cohortDelete:value });
+  }
+
   getAllCohorts() {
     this.props.getAllCohorts();
   }
@@ -66,7 +73,6 @@ class AddUserComponent extends React.Component {
 
   handleNewCohortSubmit(event) {
     event.preventDefault();
-    //console.log('new cohort:', this.state.cohortCity + this.state.cohortNumber)
     fetch('/api/cohort', {
       credentials: 'include',
       method: 'POST',
@@ -80,14 +86,39 @@ class AddUserComponent extends React.Component {
       return res.json()
     })
     .then(data => {
+      if(data.cohort !== undefined) {
+        this.setState({
+          snackMessage: 'New Cohort Submitted: ' + data.cohort,
+          snackbackgroundColor: '#FBC02D',
+          snackbar: true,
+        })
+      }
+    })
+  }
+
+  handleCohortDelete(event) {
+    event.preventDefault();
+    console.log('delete cohort:', this.state.cohortDelete);
+    fetch('/api/cohort', {
+      credentials: 'include',
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({cohort: this.state.cohortDelete}),
+    })
+    .then(res => {
+      this.getAllCohorts();
+      return res.json()
+    })
+    .then(data => {
       this.setState({
-        snackMessage: 'New Cohort Submitted: ' + data.cohort,
-        snackbackgroundColor: '#FBC02D',
+        snackMessage: 'Cohort Deleted',
+        snackbackgroundColor: '#E53935',
         snackbar: true,
       })
     })
   }
-
   handleUserSubmit(event) {
     event.preventDefault();
     if(this.state.username) {
@@ -116,85 +147,108 @@ class AddUserComponent extends React.Component {
 
     return (
     <div>
-      <Card className="add-user" initiallyExpanded={false}>
-        <CardHeader title='Add New Users & Cohorts'
-          actAsExpander={true}
-          showExpandableButton={true}
-          />
-        <CardText expandable={true}>
-          <form onSubmit={this.handleUserSubmit} >
-            {<div>
-              Add One New User: <br/>
-              <TextField
-                name="username"
-                className="user-input-field" 
-                value={this.state.username}
-                errorText={(this.state.username && this.state.bulkSubmit) ? "Enter either one user or a bulk user submission, not both" : ""}
-                floatingLabelText='Github Handle'
-                onChange={this.handleInputChange} />
-              <TextField
-                name="givenName"
-                className="user-input-field" 
-                value={this.state.givenName}
-                floatingLabelText='Given Name'
-                onChange={this.handleInputChange} />
-              <br />
-              Bulk User Submission: <br/>
-              <TextField
-                name='bulkSubmit'
-                className="user-input-field"
-                value={this.state.bulkSubmit}
-                floatingLabelText="Enter GitHub Usernames separated by spaces..."
-                errorText={(this.state.username && this.state.bulkSubmit) ? "Enter either one user or a bulk user submission, not both" : ""}
-                fullWidth={true}
-                onChange={this.handleInputChange} />
+        <Card className="add-user" initiallyExpanded={false}>
+          <CardHeader title='Add Users'
+            actAsExpander={true}
+            showExpandableButton={true}
+            />
+          <CardText expandable={true}>
+            <form onSubmit={this.handleUserSubmit} >
+              {<div>
+                Add One New User: <br/>
+                <TextField
+                  name="username"
+                  className="user-input-field" 
+                  value={this.state.username}
+                  errorText={(this.state.username && this.state.bulkSubmit) ? "Enter either one user or a bulk user submission, not both" : ""}
+                  floatingLabelText='Github Handle'
+                  onChange={this.handleInputChange} />
+                <TextField
+                  name="givenName"
+                  className="user-input-field" 
+                  value={this.state.givenName}
+                  floatingLabelText='Given Name'
+                  onChange={this.handleInputChange} />
                 <br />
-              <SelectField
-                className="user-input-field" 
-                value={this.state.role}
-                floatingLabelText='User Role'
-                onChange={this.handleRoleChange} 
-              >
-                <MenuItem value="admin" primaryText="admin" />
-                <MenuItem value="student" primaryText="student" />
-              </SelectField>
-              <SelectField
-                className="user-input-field" 
-                value={this.state.cohort}
-                floatingLabelText='User Cohort'
-                onChange={this.handleCohortChange} 
-              >
-                {cohorts}
-              </SelectField> 
-            </div>}
-              <RaisedButton type="submit" className="submit-button" disabled={!this.state.username && !this.state.bulkSubmit || this.state.username && this.state.bulkSubmit} label="Submit" />
-          </form>
-          <form onSubmit={this.handleNewCohortSubmit} >
-              Create New Cohort: <br/>
-              
-              <SelectField
-                className="user-input-field" 
-                value={this.state.cohortCity}
-                floatingLabelText='User Cohort City'
-                onChange={this.handleCohortCityChange} 
-              >
-                <MenuItem value={'HRNYC'} primaryText="New York" />
-                <MenuItem value={'HRSFO'} primaryText="San Francisco" />
-                <MenuItem value={'HRLAX'} primaryText="Los Angeles" />
-                <MenuItem value={'HRAUS'} primaryText="Austin" />
-                <MenuItem value={'HRREM'} primaryText="Remote" />
-              </SelectField> 
-              <TextField
-                name="cohortNumber"
-                errorText={(+this.state.cohortNumber < 0 || +this.state.cohortNumber >400 || isNaN(+this.state.cohortNumber)) ? "Please enter a valid cohort number" : ""}
-                className="user-input-field" 
-                value={this.state.cohortNumber}
-                floatingLabelText='Enter Cohort Number'
-                onChange={this.handleInputChange} />
-              <RaisedButton type="submit" className="submit-button" disabled={!this.state.cohortCity || !this.state.cohortNumber || typeof +this.state.cohortNumber !== 'number'} label="Submit" />
-          </form>
-        </CardText>
-      </Card>
+                Bulk User Submission: <br/>
+                <TextField
+                  name='bulkSubmit'
+                  className="user-input-field"
+                  value={this.state.bulkSubmit}
+                  floatingLabelText="Enter GitHub Usernames separated by spaces..."
+                  errorText={(this.state.username && this.state.bulkSubmit) ? "Enter either one user or a bulk user submission, not both" : ""}
+                  fullWidth={true}
+                  onChange={this.handleInputChange} />
+                  <br />
+                <SelectField
+                  className="user-input-field" 
+                  value={this.state.role}
+                  floatingLabelText='User Role'
+                  onChange={this.handleRoleChange} 
+                >
+                  <MenuItem value="admin" primaryText="admin" />
+                  <MenuItem value="student" primaryText="student" />
+                </SelectField>
+                <SelectField
+                  className="user-input-field" 
+                  value={this.state.cohort}
+                  floatingLabelText='User Cohort'
+                  onChange={this.handleCohortChange} 
+                >
+                  {cohorts}
+                </SelectField> 
+              </div>}
+                <RaisedButton type="submit" className="submit-button" disabled={!this.state.username && !this.state.bulkSubmit || this.state.username && this.state.bulkSubmit} label="Add Users" />
+            </form>
+            </CardText>
+          </Card>
+          <Card className="add-user" initiallyExpanded={false}>
+            <CardHeader title='Add & Delete Cohorts'
+              actAsExpander={true}
+              showExpandableButton={true}
+              />
+            <CardText expandable={true}>
+            <form onSubmit={this.handleNewCohortSubmit} >
+                Create New Cohort: <br/>
+                
+                <SelectField
+                style={{width: '50%'}}
+                  className="user-input-field" 
+                  value={this.state.cohortCity}
+                  floatingLabelText='User Cohort City'
+                  onChange={this.handleCohortCityChange} 
+                >
+                  <MenuItem value={'HRNYC'} primaryText="New York" />
+                  <MenuItem value={'HRSFO'} primaryText="San Francisco" />
+                  <MenuItem value={'HRLAX'} primaryText="Los Angeles" />
+                  <MenuItem value={'HRAUS'} primaryText="Austin" />
+                  <MenuItem value={'HRREM'} primaryText="Remote" />
+                </SelectField> 
+                <TextField
+                style={{width: '50%'}}
+                  name="cohortNumber"
+                  errorText={(+this.state.cohortNumber < 0 || +this.state.cohortNumber >400 || isNaN(+this.state.cohortNumber)) ? "Please enter a valid cohort number" : ""}
+                  className="user-input-field" 
+                  value={this.state.cohortNumber}
+                  floatingLabelText='Enter Cohort Number'
+                  onChange={this.handleInputChange} />
+                <RaisedButton type="submit" className="submit-button" disabled={!this.state.cohortCity || !this.state.cohortNumber || typeof +this.state.cohortNumber !== 'number'} label="Add New Cohort" />
+            </form>
+            <form onSubmit={this.handleCohortDelete} >
+                Delete Cohort: <br/>
+                
+                                <SelectField
+                  className="user-input-field" 
+                  value={this.state.cohortDelete}
+                  floatingLabelText='Delete Cohort'
+                  onChange={this.handleDeleteCohortChange} 
+                >
+                  {cohorts}
+                </SelectField> 
+                <RaisedButton type="submit" className="submit-button" disabled={!this.state.cohortDelete} label="Delete Cohort" />
+            </form>
+          </CardText>
+        </Card>
         <Snackbar
               bodyStyle={{ background: this.state.snackbackgroundColor }}
               open={this.state.snackbar}

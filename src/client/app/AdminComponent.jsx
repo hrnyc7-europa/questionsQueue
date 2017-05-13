@@ -45,7 +45,6 @@ class AdminComponent extends React.Component {
 
 
   render() {
-
     return (
       !this.state.isAdmin ? <div></div> :
       <Card className="admin" initiallyExpanded={true}>
@@ -56,17 +55,21 @@ class AdminComponent extends React.Component {
         <CardText expandable={true}>
           <AddUserComponent 
             getAllCohorts={this.getAllCohorts}
+            user={this.props.user}
             allCohorts={this.state.allCohorts}
             handleUserSubmit={this.props.handleUserSubmit} 
-            handleSelectChange={this.props.handleSelectChange}
           />
           <DataComponent
             questions={this.props.questions}
             users={this.props.users}
             allCohorts={this.state.allCohorts}
             cohortChoice={this.props.cohortChoice}
+            cityChoice={this.props.cityChoice}
             handleFilterByCohort={this.props.handleFilterByCohort}
+            handleFilterByCity={this.props.handleFilterByCity}
             handleUserDelete={this.props.handleUserDelete}
+            handleOpen={this.props.handleOpen}
+            handleUserModify={this.props.handleUserModify}
           />
           <NextTownHallButton 
             isAdmin={this.props.isAdmin}
