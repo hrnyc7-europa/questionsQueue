@@ -41,7 +41,7 @@ class QuestionMenuComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('received', nextProps.question);
+    //console.log('received', nextProps.question);
     if(!nextProps.question.answered) {
       this.closeAnswerCodeEditor();
     }

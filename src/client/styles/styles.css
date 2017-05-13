@@ -241,7 +241,6 @@ body {
 }
 .question-admin-header {
   min-height: 20px;
-  padding: 10px 0px 10px 15px;
   border-bottom: 1px solid #989ea3;
   background-color: #fafbfc;
   display: flex;
@@ -252,12 +251,16 @@ body {
 .question-admin-title {
   color: #414345;
   font-size: 1.125em !important;
+  flex-grow: 3;
+  height: 100%;
+  padding-left: 15px;
 }
 .question-admin-button {
-  position: absolute;
-  right: 13.5% !important;
+  /*position: absolute;*/
+  /*right: 13.5% !important;*/
+  flex-grow: 1;
+  max-width: 25%;
   display: inline-block;
-  width: 25%;
   padding: 0;
   border-right: 1px solid #dae2e9;
   padding: 10px 15px;
@@ -387,8 +390,8 @@ body {
   margin-bottom: 24px;
 }
 
-#profile-wrapper strong,
-#profile-wrapper p {
+#profile-wrapper .profileContent strong,
+#profile-wrapper .profileContent p {
   color: #0360d6;
   font-size: 18px;
   width: 100%;
@@ -437,38 +440,18 @@ body {
   flex-direction: column;
 }
 
-/*#profile-wrapper .profileContent {
-  margin: 0;
+#profile-wrapper .desktopHeader {
+  width: 100%;
+  margin: 20px 0 0 20px;
+  padding-top: 30px;
+  font-size: 1.75em;
+  font-weight: 300;
 }
 
-.profilePic {
-  width:50%;
-  margin-top: 40px;
-  margin-bottom: 20px;
-  border-radius: 50%;
-}*/
-/*.profileContent {
-  max-width: 500px !important;
-  text-align: center !important;
-  margin: 5% auto 5% auto;
-  width: 80%;
-  padding: 0px 15px 30px 15px;
-  font-family: 'Roboto', sans-serif !important;
-}*/
-/*.profileHeading {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 0.875em !important;
-  font-weight: bold;
+#profile-wrapper .question-header p {
+  color: #0360d6;
 }
-.profileText {
-  font-size: 1.25em !important;
-  font-weight: normal;
+
+#profile-queue p {
+  text-align: left;
 }
-.profileInput {
-  width: 100% !important;
-}
-.profileBtn {
-  width: 100% !important;
-  margin-top: 20px;
-}*/

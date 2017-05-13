@@ -341,8 +341,9 @@ class ProfileComponent extends React.Component {
           </div>
         </Paper>
 
-				<div className="profileHeading">Questions</div>
+				<div className="desktopHeader">Questions</div>
 		      <QueueComponent
+            id="profile-queue"
 		        style={{textAlign: 'left !important'}}
 		        title="Pending Questions"
 		        questions={this.state.questions}
