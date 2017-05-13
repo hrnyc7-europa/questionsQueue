@@ -100,9 +100,9 @@ class QuestionComponent extends React.Component {
 	              user={this.state.user}
 	            />
 
-	            <div className="mobileView">
-		            <Link style={{padding: '4%', textAlign: 'center'}} to="/home">
-		                <RaisedButton style={{width: '92%'}} label="BACK TO QUESTIONS" />
+	            <div className="mobileView" style={{margin: '15px'}}>
+		            <Link to="/home">
+		                <RaisedButton style={{width: '100%'}} label="BACK TO QUESTIONS" />
 		            </Link>
 	            </div>
 

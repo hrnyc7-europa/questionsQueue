@@ -2,6 +2,7 @@ import React from 'react';
 
 // material-ui
 import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
 
 import QuestionVoteComponent from './QuestionVoteComponent.jsx';
 import QuestionMenuComponent from './QuestionMenuComponent.jsx';
@@ -15,6 +16,7 @@ function QuestionComponent({ user, question, handlers }) {
   var authorMessage = isAdmin || isAuthor ? `by ${question.username}` : '';
 
   return (
+    <Paper>
       <div className="question-wrapper">
         <QuestionAdminComponent question={question} user={user} handlers={handlers}/>
         <div className="question-header-container">
@@ -38,6 +40,7 @@ function QuestionComponent({ user, question, handlers }) {
         </div>
         <QuestionMenuComponent question={question} user={user} handlers={handlers}/>
       </div>
+    </Paper>  
   );
 };
 

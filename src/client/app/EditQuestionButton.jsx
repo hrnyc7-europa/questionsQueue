@@ -53,7 +53,7 @@ class EditQuestionButton extends React.Component {
             question={this.props.question}
             handleEdit={this.handleEdit}
             isAdmin={this.props.isAdmin}/>
-          <RaisedButton style={{width: '92%', margin: '4%'}} onClick={this.handleClose} label="BACK TO QUESTIONS" />
+          <RaisedButton style={{width: '93%', margin: '3.5%'}} onClick={this.handleClose} label="BACK TO QUESTIONS" />
         </Dialog>
       </span>
     );

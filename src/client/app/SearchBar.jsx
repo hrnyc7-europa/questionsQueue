@@ -32,7 +32,7 @@ function SearchBar(props) {
   )
 
   return (
-    <div className="search-wrapper">
+    <Paper className="search-wrapper">
       <div className="search-header">
         <i className="material-icons search-icon">search</i>
         <TextField className="search-text"
@@ -76,7 +76,7 @@ function SearchBar(props) {
           {selectTownHall}
         </div>
       ): <span />}
-    </div>
+    </Paper>
   )
 }
 

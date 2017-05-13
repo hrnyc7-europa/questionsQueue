@@ -27,8 +27,6 @@ body {
 #queue-wrapper .question-wrapper,
 #profile-wrapper .question-wrapper {
   margin-top: 20px;
-  border: 1px solid #989ea3;
-  background-color: #fff;
 }
 
 #queue-wrapper .question-header,
@@ -81,7 +79,7 @@ body {
 #profile-wrapper .question-upvote,
 #profile-wrapper i {
   cursor: pointer;
-  font-size: 1.5em;
+  font-size: 1.35em;
 }
 
 #queue-wrapper .question-created,
@@ -142,15 +140,13 @@ body {
   display: flex;
   min-height: 40px;
   max-height: 40px;
-  border: none;
-  border-left: 1px solid #989ea3;
   outline: none;
   background-color: #fafbfc;
   align-items: center;
+  border: 1px solid #eaeff3;
 }
 
 #queue-wrapper .no-border-left {
-  border-left: 0;
 }
 
 #queue-wrapper button:hover,
@@ -186,8 +182,6 @@ body {
 #home-wrapper .search-wrapper {
   margin: 15px;
   padding: 0px 15px 30px 15px;
-  border: 1px solid #989ea3;
-  background-color: white;
 }
 
 #home-wrapper .search-text {
@@ -236,7 +230,8 @@ body {
   top: -4px;
 }
 .town-hall-button {
-  margin: 25px !important;
+  margin: 2% !important;
+  width: 96%;
   background-color: red !important;
   align-self: center !important;
 }
@@ -252,6 +247,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-weight: bold;
 }
 .question-admin-title {
   color: #414345;
@@ -259,11 +255,10 @@ body {
 }
 .question-admin-button {
   position: absolute;
-  right: 30px;
+  right: 13.5% !important;
   display: inline-block;
   width: 25%;
   padding: 0;
-  margin-right: -14px;
   border-right: 1px solid #dae2e9;
   padding: 10px 15px;
   font-size: 1.25em !important;
@@ -295,15 +290,17 @@ body {
 }
 
 .logo-button {
-  width: 330px;
+  width: 300px;
   margin-top: 8px !important;
   color: white !important;
-  font-size: 1.75em !important;
+  font-size: 1.5em !important;
   font-weight: bold !important;
 }
 
 .question-code-header {
   padding: 10px 0 20px 0;
+  font-size: 14px;
+  color: #0769d6;
 }
 
 #login-wrapper {
@@ -313,8 +310,8 @@ body {
 
 #login-wrapper .login-github-logo {
   display: block;
-  height: 75px;
-  width: 75px;
+  height: 110px;
+  width: 110px;
   background-image: url(../assets/github-logo.png);
   background-position: center;
   background-size: cover;
@@ -322,14 +319,15 @@ body {
 }
 
 #login-button {
-  width: 100%;
+  width: 75%;
   max-width: 250px;
   height: 34px;
-  margin: auto;
+  margin: auto !important;
   background-color: #269f42 !important;
   background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%) !important;
   background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%) !important;
   border: 1px solid rgba(27,31,35,0.5) !important;
+  margin-top: 20px !important;
 }
 
 #login-wrapper {
@@ -338,20 +336,18 @@ body {
 }
 
 #login-wrapper .login-content {
-  width: 50%;
+  width: 50vw;
   max-width: 400px;
-  height: 50%;
-  margin-top: 25%;
+  min-width: 300px;
+
   display: block;
   background-color: #dae2e9;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  border: 1px solid #989ea3;
+  padding: 40px 0px;
 }
 
 #login-wrapper h1 {
   font-size: 1.875em;
-  margin: 0;
+  margin: 20px 40px 40px 40px;
 }
 
 #login-button span {

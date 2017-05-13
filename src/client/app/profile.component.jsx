@@ -13,6 +13,28 @@ import {
 } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import QueueComponent from './QueueComponent.jsx';
+import { remove } from 'lodash';
+
+
+// Update an array of questions to include a modified question.
+// Mutates array. Does not return a value.
+const updateQuestions = (questions, newQ) => {
+  const idx = questions.findIndex(i => i._id === newQ._id);
+  questions[idx] = newQ;
+};
+
+const putRequest = (question) =>
+
+  fetch('/api/questions', {
+    credentials: 'include',
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(question),
+  });
+
 
 class ProfileComponent extends React.Component {
 	constructor(props) {
@@ -31,7 +53,7 @@ class ProfileComponent extends React.Component {
 
 			document.cookie.split(';').forEach((str) => {
 				const [k, v] = str.split('=').map(s => s.trim());
-					if (k === 'username' || k === 'role') {
+					if (k === 'username' || k === 'role' || k === 'cohort') {
 					this.state.user[k] = v;
 				} else if(k === 'img') {
 					this.state.user['avatarURL'] = unescape(v);
@@ -46,7 +68,123 @@ class ProfileComponent extends React.Component {
 			this.updateUserName = this.updateUserName.bind(this);
 			this.updateUserPicture = this.updateUserPicture.bind(this);
 			this.updateCurrentUser = this.updateCurrentUser.bind(this);
+
+			this.handleVote = this.handleVote.bind(this);
+		    this.handleUpvote = this.handleUpvote.bind(this);
+		    this.handleDownvote = this.handleDownvote.bind(this);
+		    this.handleAnswered = this.handleAnswered.bind(this);
+		    this.handleDelete = this.handleDelete.bind(this);
+		    this.handleEdit = this.handleEdit.bind(this);
+		    this.handleTagDelete = this.handleTagDelete.bind(this);
+		    this.handleKeep = this.handleKeep.bind(this);
+		    this.handleUnkeep = this.handleUnkeep.bind(this);
 	}
+
+  handleVote(question, n) {
+	    const q = question;
+	    q.votes += n;
+	    if (n === 1) {
+	      q.usersVoted.push(this.state.user.username);
+	    } else {
+	      remove(q.usersVoted, i => i === this.state.user.username);
+	    }
+	    putRequest(q)
+	      .then(res => res.json())
+	      .then((data) => {
+	        this.setState((prevState) => {
+	          const questions = prevState.questions;
+	          updateQuestions(questions, data);
+	          return { questions };
+	        });
+	      })
+	      .catch((err) => {
+	        q.votes -= n;
+	      });
+	  }
+
+	handleUpvote(question) {
+	    this.handleVote(question, 1);
+	  }
+
+  handleDownvote(question) {
+	    this.handleVote(question, -1);
+	  }
+
+  handleAnswered(question) {
+    const q = question;
+    const current = question.answered;
+    q.answered = !current;
+    putRequest(question)
+      .then(res => res.json())
+      .then((data) => {
+        this.setState((prevState) => {
+          const questions = prevState.questions;
+          updateQuestions(questions, data);
+          return { questions
+          }
+        });
+      })
+      .catch((err) => {
+        q.answered = current;
+      });
+  }
+
+  handleDelete(question) {
+    const _id = question._id;
+    fetch('/api/questions', {
+      credentials: 'include',
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ _id }),
+    })
+    .then(() => {
+      this.setState((prevState) => {
+        const questions = prevState.questions;
+        remove(questions, (q) => q._id === _id);
+        return {
+          questions
+        };
+      });
+    });
+  }
+
+  handleEdit(question) {
+    putRequest(question)
+      .then(res => res.json())
+      .then((data) => {
+        this.setState((prevState) => {
+          return {
+          };
+        });
+      })
+      .catch((err) => {
+      });
+  }
+
+  handleTagDelete(tag, question) {
+    const q = question;
+    remove(q.tags, t => t === tag);
+    putRequest(q)
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState((prevState) => {
+            const questions = prevState.questions;
+            updateQuestions(questions, q);
+            return { questions };
+          });
+        }
+      });
+  }
+
+  handleKeep(question) {
+    question.keep = true;
+    putRequest(question);
+  }
+
+  handleUnkeep(question) {
+    question.keep = false;
+    putRequest(question);
+  }
 
 	handleOpen() {
 		this.setState({ open: true });
@@ -204,50 +342,28 @@ class ProfileComponent extends React.Component {
         </Paper>
 
 				<div className="profileHeading">Questions</div>
-				{this.state.questions.map((question, idx) => {
-					return (
-						<div key={idx} className="question-wrapper" style={{border: '1px solid black', 'backgroundColor': 'lightblue'}}>
-							<p className="question-created">{`TownHall #${question.townHall}`}</p>
-			        		<div className="question-header-container">
-			          		<div className="question-header">
-		            		<div className="question-text">
-				              {question.questionText.split('\n').map(function(line, idx) {
-				                return <p key={idx}>{line}<br/></p>
-				              })}
-			            	</div>
-				            <div className="question-info">
-				              {/* <QuestionVoteComponent question={question} user={user} handlers={handlers}/> */}
-											<div className="question-upvote">
-									      <p>{question.votes}</p>
-									      <i className="material-icons">star</i>
-									    </div>
-				            </div>
-					          </div>
-					          <p className="question-created">{moment(question.createdAt).fromNow()}</p>
-					          {question.answered ? <span className="question-badge answered">Answered</span> : null}
-					          <div className="question-tags">
-					            {question.tags.map(function(tag, idx) {
-					              return <span key={idx} className="question-badge">{tag}</span>
-					            })}
-					          </div>
-			        		</div>
-					        {/* <QuestionMenuComponent question={question} user={user} handlers={handlers}/> */}
-									<br></br>
-									<br></br>
-					      </div>
-							)
-				})}
-
-			    <hr style={{margin: "20px"}}/>
-
+		      <QueueComponent
+		        style={{textAlign: 'left !important'}}
+		        title="Pending Questions"
+		        questions={this.state.questions}
+		        handleUpvote={this.handleUpvote}
+		        handleDownvote={this.handleDownvote}
+		        handleAnswered={this.handleAnswered}
+		        handleDelete={this.handleDelete}
+		        handleEdit={this.handleEdit}
+		        handleTagDelete={this.handleTagDelete}
+	          handleKeep={this.handleKeep}
+	          handleUnkeep={this.handleUnkeep}
+		        user={this.state.user}
+		       />
 				<Dialog
 				  style={{width: "100%"}}
-		          title="Edit Question"
-		          modal={false}
-		          open={this.state.open}
-		          onRequestClose={this.handleClose}
-		          autoScrollBodyContent={true}
-		          >
+		      title="Edit Question"
+		      modal={false}
+		      open={this.state.open}
+		      onRequestClose={this.handleClose}
+		      autoScrollBodyContent={true}
+		    >
 		          	<TextField className="profileInput"
 				        onChange={(e) => this.updateUserName(e.target.value)}
 				        floatingLabelText="Update your Name..." />

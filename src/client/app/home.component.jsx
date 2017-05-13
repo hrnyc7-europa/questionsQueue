@@ -488,9 +488,9 @@ class HomeComponent extends React.Component {
           handleNextTownHall={this.handleNextTownHall}
         />
 
-        <div className="desktopView">
-          <Link style={{padding: '4%', textAlign: 'center'}} to="/profile">
-              <RaisedButton style={{width: '92%'}} label="VIEW PROFILE" />
+        <div className="desktopView" style={{marginTop: '30px', marginBottom: '50px'}}>
+          <Link style={{padding: '2%', textAlign: 'center'}} to="/profile">
+              <RaisedButton style={{width: '96%'}} label="VIEW PROFILE" />
           </Link>
         </div>
 

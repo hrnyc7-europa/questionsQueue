@@ -106,11 +106,6 @@ class NavBar extends React.Component {
 							  <i className="material-icons">settings</i>
 							  <span className="navbarText"> Manage </span>
 							</MenuItem> ) :  <span /> }
-						{ this.state.user.role == "admin" ? (
-							<MenuItem className="navbarItem" href="#/analytics" onTouchTap={this.handleClose}>
-							  <i className="material-icons">show_chart</i>
-							  <span className="navbarText"> Analytics </span>
-							</MenuItem>) :  <span /> }
 						<MenuItem className="navbarItem" onTouchTap={this.handleClose}>
 						  <i className="material-icons">highlight_off</i>
 						  <span className="navbarText"> Close </span>
