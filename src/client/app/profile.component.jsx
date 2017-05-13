@@ -46,8 +46,12 @@ class ProfileComponent extends React.Component {
           },
 					open: false,
 				 	updatedUser: {},
-					disableButton: true
+					disableButton: true,
+          questions: [],
+          votes: 0
 				}
+
+
 
 			document.cookie.split(';').forEach((str) => {
 				const [k, v] = str.split('=').map(s => s.trim());
@@ -58,6 +62,8 @@ class ProfileComponent extends React.Component {
 				}
 			});
 			this.getCurrentUser();
+      this.getTownHall();
+      this.getQuestions();
 
 			this.handleOpen = this.handleOpen.bind(this);
 			this.handleClose = this.handleClose.bind(this);
@@ -66,15 +72,52 @@ class ProfileComponent extends React.Component {
 			this.updateCurrentUser = this.updateCurrentUser.bind(this);
 
 			this.handleVote = this.handleVote.bind(this);
-		    this.handleUpvote = this.handleUpvote.bind(this);
-		    this.handleDownvote = this.handleDownvote.bind(this);
-		    this.handleAnswered = this.handleAnswered.bind(this);
-		    this.handleDelete = this.handleDelete.bind(this);
-		    this.handleEdit = this.handleEdit.bind(this);
-		    this.handleTagDelete = this.handleTagDelete.bind(this);
-		    this.handleKeep = this.handleKeep.bind(this);
-		    this.handleUnkeep = this.handleUnkeep.bind(this);
+		  this.handleUpvote = this.handleUpvote.bind(this);
+		  this.handleDownvote = this.handleDownvote.bind(this);
+		  this.handleAnswered = this.handleAnswered.bind(this);
+		  this.handleDelete = this.handleDelete.bind(this);
+		  this.handleEdit = this.handleEdit.bind(this);
+		  this.handleTagDelete = this.handleTagDelete.bind(this);
+		  this.handleKeep = this.handleKeep.bind(this);
+		  this.handleUnkeep = this.handleUnkeep.bind(this);
 	}
+
+  getQuestions() {
+     fetch('/api/questions', { credentials: 'include' })
+       .then((res) => {
+         if (res.status === 200 || res.status === 304) {
+           return res.json();
+         } else if (res.status === 403) {
+           return null;
+         }
+       })
+       .then(questions => {
+                     questions = questions.filter(question => question.cohort === this.state.user.cohort && question.username ===  this.state.user.username);
+                     questions = questions.sort((a, b) => a.createdAt > b.createdAt);
+                     questions = questions.sort((a, b) => a.townHall < b.townHall);
+                     var votes = questions.reduce(function(acc, question) {
+                         return acc + question.votes;
+                     }, 0);
+                     this.setState({questions: questions});
+                     this.setState({votes: votes});
+             });
+
+   }
+
+   getTownHall() {
+       const props = this.props;
+       fetch('/api/townhall', { credentials: 'include' })
+         .then((res) => {
+           if (res.status === 200 || res.status === 304) {
+             return res.json();
+           } else if (res.status === 403) {
+             return null;
+           }
+         })
+         .then(res => {
+             this.setState({townHall: res.townHall})
+         });
+     }
 
   handleVote(question, n) {
 	    const q = question;
