@@ -2,6 +2,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavBar from './navbar.component.jsx';
 import Dialog from 'material-ui/Dialog';
+import Paper from 'material-ui/Paper';
 import {
   HashRouter as Router,
   Route,
@@ -18,7 +19,9 @@ class ProfileComponent extends React.Component {
 	    super(props);
 
 			this.state = {
-					user: {},
+					user: {
+            avatarURL: 'https://heatherchristenaschmidt.files.wordpress.com/2011/09/facebook_no_profile_pic2-jpg.gif'
+          },
 					open: false,
 				 	updatedUser: {},
 					disableButton: true,
@@ -157,41 +160,50 @@ class ProfileComponent extends React.Component {
 
 		return (
 			<MuiThemeProvider>
-			<div className="app-body">
-			<div id="profile-wrapper" className="profileContent">
-				<img className="profilePic" src={this.state.user.avatarURL}/>
-
-				<hr style={{margin: "20px"}}/>
-
-				<div className="profileHeading">Username</div>
-				<div className="profileText"> {this.state.user.username} </div>
-
-				<div className="profileHeading">Name</div>
-				<div className="profileText"> {this.state.user.givenName} </div>
-
-				<div className="profileHeading">Role</div>
-				<div className="profileText"> {this.state.user.role} </div>
-
-				<div className="profileHeading">Cohort</div>
-				<div className="profileText"> {this.state.user.cohort} </div>
-
-				<div className="profileHeading">TownHall</div>
-				<div className="profileText"> {this.state.townHall} </div>
-
-				<RaisedButton onClick={this.handleOpen} style={{marginTop: '20px', marginBottom: '20px', width: '92%'}} label="EDIT PROFILE" />
-
-				<hr style={{margin: "20px"}}/>
-
-				<div className="profileHeading">Total Votes</div>
-				<div className="profileText"> {this.state.votes} </div>
-
-				<div className="profileHeading">Questions Asked</div>
-				<div className="profileText"> {this.state.questions.length} </div>
+			<div id="profile-wrapper" className="app-body">
+  			<Paper className="profileContent">
+          <div className="profilePicContainer">
+  				    <img className="profilePic" src={this.state.user.avatarURL}/>
+              <RaisedButton onClick={this.handleOpen} label="Edit Profile"/>
+          </div>
+          <div className="profileInfo">
+            <div className="profileTuple">
+      				<strong className="profileHeading">Username</strong>
+      				<p className="profileText"> {this.state.user.username} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">Name</strong>
+      				<p className="profileText"> {this.state.user.givenName} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">Role</strong>
+      				<p className="profileText"> {this.state.user.role} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">Cohort</strong>
+      				<p className="profileText"> {this.state.user.cohort} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">TownHall</strong>
+      				<p className="profileText"> {this.state.townHall} </p>
+            </div>
+            {this.state.user.role === 'student' ? (
+              <div>
+                <div className="profileTuple">
+          				<strong className="profileHeading">Total Votes</strong>
+          				<p className="profileText"> {this.state.votes} </p>
+                </div>
+                <div className="profileTuple">
+          				<strong className="profileHeading">Questions Asked</strong>
+          				<p className="profileText"> {this.state.questions.length} </p>
+                </div>
+              </div>
+              ) : null
+            }
+          </div>
+        </Paper>
 
 				<div className="profileHeading">Questions</div>
-
-				<br />
-
 				{this.state.questions.map((question, idx) => {
 					return (
 						<div key={idx} className="question-wrapper" style={{border: '1px solid black', 'backgroundColor': 'lightblue'}}>
@@ -218,7 +230,7 @@ class ProfileComponent extends React.Component {
 					              return <span key={idx} className="question-badge">{tag}</span>
 					            })}
 					          </div>
-			        		</div>      
+			        		</div>
 					        {/* <QuestionMenuComponent question={question} user={user} handlers={handlers}/> */}
 									<br></br>
 									<br></br>
@@ -227,7 +239,7 @@ class ProfileComponent extends React.Component {
 				})}
 
 			    <hr style={{margin: "20px"}}/>
-			  
+
 				<Dialog
 				  style={{width: "100%"}}
 		          title="Edit Question"
@@ -250,7 +262,6 @@ class ProfileComponent extends React.Component {
 	            <Link style={{padding: '4%', textAlign: 'center'}} to="/home">
 	                <RaisedButton style={{width: '92%'}} label="BACK TO HOME" />
 	            </Link>
-			</div>
 		</div>
 	</MuiThemeProvider>)
 	}
