@@ -2,6 +2,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavBar from './navbar.component.jsx';
 import Dialog from 'material-ui/Dialog';
+import Paper from 'material-ui/Paper';
 import {
   HashRouter as Router,
   Route,
@@ -40,11 +41,17 @@ class ProfileComponent extends React.Component {
 	    super(props);
 
 			this.state = {
-					user: {},
+					user: {
+            avatarURL: 'https://heatherchristenaschmidt.files.wordpress.com/2011/09/facebook_no_profile_pic2-jpg.gif'
+          },
 					open: false,
 				 	updatedUser: {},
-					disableButton: true
+					disableButton: true,
+          questions: [],
+          votes: 0
 				}
+
+
 
 			document.cookie.split(';').forEach((str) => {
 				const [k, v] = str.split('=').map(s => s.trim());
@@ -55,6 +62,8 @@ class ProfileComponent extends React.Component {
 				}
 			});
 			this.getCurrentUser();
+      this.getTownHall();
+      this.getQuestions();
 
 			this.handleOpen = this.handleOpen.bind(this);
 			this.handleClose = this.handleClose.bind(this);
@@ -63,15 +72,52 @@ class ProfileComponent extends React.Component {
 			this.updateCurrentUser = this.updateCurrentUser.bind(this);
 
 			this.handleVote = this.handleVote.bind(this);
-		    this.handleUpvote = this.handleUpvote.bind(this);
-		    this.handleDownvote = this.handleDownvote.bind(this);
-		    this.handleAnswered = this.handleAnswered.bind(this);
-		    this.handleDelete = this.handleDelete.bind(this);
-		    this.handleEdit = this.handleEdit.bind(this);
-		    this.handleTagDelete = this.handleTagDelete.bind(this);
-		    this.handleKeep = this.handleKeep.bind(this);
-		    this.handleUnkeep = this.handleUnkeep.bind(this);
+		  this.handleUpvote = this.handleUpvote.bind(this);
+		  this.handleDownvote = this.handleDownvote.bind(this);
+		  this.handleAnswered = this.handleAnswered.bind(this);
+		  this.handleDelete = this.handleDelete.bind(this);
+		  this.handleEdit = this.handleEdit.bind(this);
+		  this.handleTagDelete = this.handleTagDelete.bind(this);
+		  this.handleKeep = this.handleKeep.bind(this);
+		  this.handleUnkeep = this.handleUnkeep.bind(this);
 	}
+
+  getQuestions() {
+     fetch('/api/questions', { credentials: 'include' })
+       .then((res) => {
+         if (res.status === 200 || res.status === 304) {
+           return res.json();
+         } else if (res.status === 403) {
+           return null;
+         }
+       })
+       .then(questions => {
+                     questions = questions.filter(question => question.cohort === this.state.user.cohort && question.username ===  this.state.user.username);
+                     questions = questions.sort((a, b) => a.createdAt > b.createdAt);
+                     questions = questions.sort((a, b) => a.townHall < b.townHall);
+                     var votes = questions.reduce(function(acc, question) {
+                         return acc + question.votes;
+                     }, 0);
+                     this.setState({questions: questions});
+                     this.setState({votes: votes});
+             });
+
+   }
+
+   getTownHall() {
+       const props = this.props;
+       fetch('/api/townhall', { credentials: 'include' })
+         .then((res) => {
+           if (res.status === 200 || res.status === 304) {
+             return res.json();
+           } else if (res.status === 403) {
+             return null;
+           }
+         })
+         .then(res => {
+             this.setState({townHall: res.townHall})
+         });
+     }
 
   handleVote(question, n) {
 	    const q = question;
@@ -254,67 +300,73 @@ class ProfileComponent extends React.Component {
 
 		return (
 			<MuiThemeProvider>
-			<div className="app-body">
-			<div id="profile-wrapper" className="profileContent">
-				<img className="profilePic" src={this.state.user.avatarURL}/>
+			<div id="profile-wrapper" className="app-body">
+  			<Paper className="profileContent">
+          <div className="profilePicContainer">
+  				    <img className="profilePic" src={this.state.user.avatarURL}/>
+              <RaisedButton onClick={this.handleOpen} label="Edit Profile"/>
+          </div>
+          <div className="profileInfo">
+            <div className="profileTuple">
+      				<strong className="profileHeading">Username</strong>
+      				<p className="profileText"> {this.state.user.username} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">Name</strong>
+      				<p className="profileText"> {this.state.user.givenName} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">Role</strong>
+      				<p className="profileText"> {this.state.user.role} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">Cohort</strong>
+      				<p className="profileText"> {this.state.user.cohort} </p>
+            </div>
+            <div className="profileTuple">
+      				<strong className="profileHeading">TownHall</strong>
+      				<p className="profileText"> {this.state.townHall} </p>
+            </div>
+            {this.state.user.role === 'student' ? (
+              <div>
+                <div className="profileTuple">
+          				<strong className="profileHeading">Total Votes</strong>
+          				<p className="profileText"> {this.state.votes} </p>
+                </div>
+                <div className="profileTuple">
+          				<strong className="profileHeading">Questions Asked</strong>
+          				<p className="profileText"> {this.state.questions.length} </p>
+                </div>
+              </div>
+              ) : null
+            }
+          </div>
+        </Paper>
 
-				<hr style={{margin: "20px"}}/>
-
-				<div className="profileHeading">Username</div>
-				<div className="profileText"> {this.state.user.username} </div>
-
-				<div className="profileHeading">Name</div>
-				<div className="profileText"> {this.state.user.givenName} </div>
-
-				<div className="profileHeading">Role</div>
-				<div className="profileText"> {this.state.user.role} </div>
-
-				<div className="profileHeading">Cohort</div>
-				<div className="profileText"> {this.state.user.cohort} </div>
-
-				<div className="profileHeading">TownHall</div>
-				<div className="profileText"> {this.state.townHall} </div>
-
-				<RaisedButton onClick={this.handleOpen} style={{marginTop: '20px', marginBottom: '20px', width: '92%'}} label="EDIT PROFILE" />
-
-				<hr style={{margin: "20px"}}/>
-
-				<div className="profileHeading">Total Votes</div>
-				<div className="profileText"> {this.state.votes} </div>
-
-				<div className="profileHeading">Questions Asked</div>
-				<div className="profileText"> {this.state.questions.length} </div>
-
-				<div className="profileHeading">Questions</div>
-
-		        <QueueComponent
+				<div className="desktopHeader">Questions</div>
+		      <QueueComponent
+            id="profile-queue"
 		        style={{textAlign: 'left !important'}}
-		          title="Pending Questions"
-		          questions={this.state.questions}
-		          handleUpvote={this.handleUpvote}
-		          handleDownvote={this.handleDownvote}
-		          handleAnswered={this.handleAnswered}
-		          handleDelete={this.handleDelete}
-		          handleEdit={this.handleEdit}
-		          handleTagDelete={this.handleTagDelete}
-	              handleKeep={this.handleKeep}
-	              handleUnkeep={this.handleUnkeep}
-		          user={this.state.user}
-		        />
-
-
-				<br />
-
-			    <hr style={{margin: "20px"}}/>
-			  
+		        title="Pending Questions"
+		        questions={this.state.questions}
+		        handleUpvote={this.handleUpvote}
+		        handleDownvote={this.handleDownvote}
+		        handleAnswered={this.handleAnswered}
+		        handleDelete={this.handleDelete}
+		        handleEdit={this.handleEdit}
+		        handleTagDelete={this.handleTagDelete}
+	          handleKeep={this.handleKeep}
+	          handleUnkeep={this.handleUnkeep}
+		        user={this.state.user}
+		       />
 				<Dialog
 				  style={{width: "100%"}}
-		          title="Edit Question"
-		          modal={false}
-		          open={this.state.open}
-		          onRequestClose={this.handleClose}
-		          autoScrollBodyContent={true}
-		          >
+		      title="Edit Question"
+		      modal={false}
+		      open={this.state.open}
+		      onRequestClose={this.handleClose}
+		      autoScrollBodyContent={true}
+		    >
 		          	<TextField className="profileInput"
 				        onChange={(e) => this.updateUserName(e.target.value)}
 				        floatingLabelText="Update your Name..." />
@@ -329,7 +381,6 @@ class ProfileComponent extends React.Component {
 	            <Link style={{padding: '4%', textAlign: 'center'}} to="/home">
 	                <RaisedButton style={{width: '92%'}} label="BACK TO HOME" />
 	            </Link>
-			</div>
 		</div>
 	</MuiThemeProvider>)
 	}
