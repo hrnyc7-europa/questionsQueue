@@ -155,7 +155,9 @@ class AddUserComponent extends React.Component {
           <CardText expandable={true}>
             <form onSubmit={this.handleUserSubmit} >
               {<div>
-                Add One New User: <br/>
+                <div className="question-admin-header">
+                  <span className="question-admin-title"> Add One New User </span>
+                </div>
                 <TextField
                   name="username"
                   className="user-input-field" 
@@ -170,7 +172,13 @@ class AddUserComponent extends React.Component {
                   floatingLabelText='Given Name'
                   onChange={this.handleInputChange} />
                 <br />
-                Bulk User Submission: <br/>
+                <br />
+                <br />
+                <br />
+
+                <div className="question-admin-header">
+                  <span className="question-admin-title"> Bulk User Submission </span>
+                </div>
                 <TextField
                   name='bulkSubmit'
                   className="user-input-field"
@@ -209,7 +217,9 @@ class AddUserComponent extends React.Component {
               />
             <CardText expandable={true}>
             <form onSubmit={this.handleNewCohortSubmit} >
-                Create New Cohort: <br/>
+                <div className="question-admin-header">
+                  <span className="question-admin-title"> Create New Cohort </span>
+                </div>
                 
                 <SelectField
                 style={{width: '50%'}}
@@ -235,9 +245,11 @@ class AddUserComponent extends React.Component {
                 <RaisedButton type="submit" className="submit-button" disabled={!this.state.cohortCity || !this.state.cohortNumber || typeof +this.state.cohortNumber !== 'number'} label="Add New Cohort" />
             </form>
             <form onSubmit={this.handleCohortDelete} >
-                Delete Cohort: <br/>
+              <div className="question-admin-header">
+                <span className="question-admin-title"> Delete Cohort </span>
+              </div>
                 
-                                <SelectField
+              <SelectField
                   className="user-input-field" 
                   value={this.state.cohortDelete}
                   floatingLabelText='Delete Cohort'
