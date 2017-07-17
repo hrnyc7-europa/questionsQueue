@@ -6,7 +6,7 @@ Authentication works with GitHub, but all users must be approved by an admin bef
 
 Built using React, Node and MongoDB.
 
-To log in to a sample student profile use the following credentials:
+**To log in to a sample student profile use the following credentials:**
 
 **user:** student-guest
 **password:** student-guest-1
