@@ -4,16 +4,18 @@
 
 Authentication works with GitHub, but all users must be approved by an admin before having access to the app.
 
+Built using React, Node and MongoDB
+
 To log in to a sample student profile use the following credentials:
 
 **user:** student-guest
-**password:** student-guest
+**password:** student-guest-1
 
 * [Try the app now]
 
 
 
-There are two types of user roles in Question Queue: students and admins.
+There are two types of user roles in Question Queue: **students** and **admins**.
 
 Students can browse the list of questions and answers from their respective group. They can also easily ask questions and attach tags and code snippets to them.
 
