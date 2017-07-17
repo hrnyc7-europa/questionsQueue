@@ -4,7 +4,7 @@
 
 Authentication works with GitHub, but all users must be approved by an admin before having access to the app.
 
-Built using React, Node and MongoDB
+Built using React, Node and MongoDB.
 
 To log in to a sample student profile use the following credentials:
 
