@@ -20,6 +20,9 @@ const LoginComponent = props => (
         <td style={{verticalAlign: "middle"}}>
           <Paper className='login-content'>
             <h1 className='welcomeText'>Log in with your github account</h1>
+            <p>Sample student profile:</p>
+            <p><b>user:</b>student-guest</p>
+            <p><b>password:</b>student-guest-1</p>
             <div className='login-github-logo'></div>
             <FlatButton
                 id='login-button'

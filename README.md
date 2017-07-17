@@ -1,36 +1,64 @@
 # Question Queue
 
-A web application for students to submit questions to be answered during a lecture. Questions can include code snippets or tags.
+**Question Queue** is an app that allows teachers and students to easily navigate the Q&A process for lessons and TownHall meetings. Due to its in-built code editor, it is geared towards technical questions. It also allows the user to rapidly share snippets of code to the group.
 
-## Table of Contents
+Authentication works with GitHub, but all users must be approved by an admin before having access to the app.
 
-1. [Team](#team)
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+Built using React, Node and MongoDB.
 
-## Team
-  __Greenfield Team__
+**To log in to a sample student profile use the following credentials:**
 
-  - __Product Owner__: Leo Gomez
-  - __Scrum Master__: Deb Mozumder
-  - __Developer__: David Hamberlin
-  - __Developer__: Paul Jaffre
+**user:** student-guest
+**password:** student-guest-1
 
-  __Legacy Team__
+* [Try the app now]
 
-  - __Product Owner__: Arturo Ruvalcaba
-  - __Scrum Master__: Willian Hua
-  - __Developer__: Thomas O'Connor
 
-## Usage
 
-Bundle FrontEnd before running the application. Run 'npm build' to run the bundler once, or 'npm run dev' to have the bundler watch for changes.
+There are two types of user roles in Question Queue: **students** and **admins**.
 
-To start the server, run 'npm start' from the root directory.
+Students can browse the list of questions and answers from their respective group. They can also easily ask questions and attach tags and code snippets to them.
 
-## Requirements
+<h3 align="center">
+  <img src="https://dl.dropboxusercontent.com/s/b34l9l3yrnhdjb0/qq_01.png?dl=0" alt="screenshot" />
+</h3>
 
-- Node 6.10.0
+<h3 align="center">
+  <img src="https://dl.dropboxusercontent.com/s/t5qj68p9nsmui1d/qq_02.png?dl=0" alt="screenshot" />
+</h3>
 
-For a complete list of dependencies, refer to 'package.json'.
+There is an upvote system in place that allows the students (and teachers) to upvote the best questions for everyone to see.
+
+Users can also go to their profile page and see all the questions they have ever asked on one screen.
+
+<h3 align="center">
+  <img src="https://dl.dropboxusercontent.com/s/60pgzs0c7j2qjso/qq_04.png?dl=0" alt="d3gameplay screenshot" />
+</h3>
+
+Admins can add and remove students from the app. They can manage groups of students across different cities and most importantly answer questions via code snippets.
+
+<h3 align="center">
+  <img src="https://dl.dropboxusercontent.com/s/nkb977ndfokl3h4/qq_03.png?dl=0" alt="d3gameplay screenshot" />
+</h3>
+
+Built using a mobile-first approach, asking questions on your phone has never been easier!
+
+<h3 align="center">
+  <img src="https://dl.dropboxusercontent.com/s/bwz787a3kg8zqee/qq_05.png?dl=0" alt="d3gameplay screenshot" />
+</h3>
+
+Team
+------
+
+* [Arturo Ruvalcaba]
+* [Thomas O'Connor]
+* [Willian Hua]
+
+<!---
+Link References
+-->
+
+[Try the app now]:https://questionqueue-hr.herokuapp.com/
+[Arturo Ruvalcaba]:https://github.com/aruvham
+[Thomas O'Connor]:https://github.com/tgoc99
+[Willian Hua]:https://github.com/huawillian
