@@ -17,7 +17,7 @@ Built using React, Node and MongoDB.
 
 There are two types of user roles in Question Queue: **students** and **admins**.
 
-Students can browse the list of questions and answers from their respective group. They can also easily ask questions and attach tags and code snippets to them.
+Students can browse the list of questions and answers from their respective groups. They can also easily ask questions and attach tags and code snippets to them.
 
 <h3 align="center">
   <img src="https://dl.dropboxusercontent.com/s/b34l9l3yrnhdjb0/qq_01.png?dl=0" alt="screenshot" />
@@ -47,7 +47,7 @@ Built using a mobile-first approach, asking questions on your phone has never be
   <img src="https://dl.dropboxusercontent.com/s/bwz787a3kg8zqee/qq_05.png?dl=0" alt="d3gameplay screenshot" />
 </h3>
 
-Team
+Developers
 ------
 
 * [Arturo Ruvalcaba]
